@@ -3,9 +3,9 @@ version: 2.1
 commands:
   destroy-environment: 
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
-      CIRCLE_WORKFLOW_ID:
-        type: string
+    # parameters:
+    #   infr_name:
+    #     type: string
     steps:
       - run:
           name: Destroy environments
@@ -148,6 +148,7 @@ jobs:
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
       - destroy-environment
+          
               
       - run:
           name: Ensure front-end infrastructure exist
