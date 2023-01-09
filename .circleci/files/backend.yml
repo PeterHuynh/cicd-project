@@ -29,7 +29,7 @@ Resources:
       SecurityGroups:
         - Ref: InstanceSecurityGroup
       KeyName: ec2-cicd 
-      ImageId: ami-068663a3c619dd892 
+      ImageId: ami-0d31d7c9fc9503726
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
