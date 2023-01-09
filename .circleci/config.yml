@@ -139,10 +139,10 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      # - run:
-      #     name: install packages
-      #     command: |
-      #       yum -y install tar gzip
+      - run:
+          name: install packages
+          command: |
+            yum -y install tar gzip
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -151,7 +151,7 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-          - destroy-environment
+      - destroy-environment
               
       - run:
           name: Ensure front-end infrastructure exist
@@ -161,7 +161,7 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-          - destroy-environment
+      - destroy-environment
               
       - run:
           name: Add back-end ip to ansible inventory
