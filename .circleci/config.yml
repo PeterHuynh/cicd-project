@@ -321,9 +321,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install curl dependencies
+          name: Install curl and aws cli dependencies
           command: |            
-            apk add curl            
+            apk add curl
+            pip install awscli --upgrade              
       - run:          
           name: Get backend url
           command: |
@@ -355,20 +356,24 @@ jobs:
       - destroy-environment-frontend        
       - destroy-environment-backend
 
-#   cloudfront-update:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Update cloudfront distribution
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       # your code here
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yml \
+              --tags project=udapeople \
+              --stack-name initialStack2 \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" 
+      # Here's where you will add some code to rollback on failure  
 
 # cleanup:
 #     docker:
