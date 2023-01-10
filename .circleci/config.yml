@@ -16,8 +16,8 @@ commands:
 
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" 
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"     
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
    
   destroy-environment-frontend: 
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -31,8 +31,8 @@ commands:
           command: |
             echo "Destroying environment..."
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive   
-
-            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}      
+            
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
   
   destroy-environment-backend: 
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.    
@@ -370,15 +370,15 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"            
             echo "${API_URL}"
             
-            if curl "${API_URL/api/status}" | grep "ok"
+            if curl ${API_URL}/api/status | grep "ok"
             then
               return 0
             else
               return 1
             fi           
       
-      - destroy-environment:
-          CIRCLE_WORKFLOW_ID: ${CIRCLE_WORKFLOW_ID:0:7}      
+      # - destroy-environment:
+      #     CIRCLE_WORKFLOW_ID: ${CIRCLE_WORKFLOW_ID:0:7}      
 
   cloudfront-update:
     docker:
