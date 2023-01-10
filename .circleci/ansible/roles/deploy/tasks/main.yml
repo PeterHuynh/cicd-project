@@ -1,0 +1,21 @@
+---
+- name: "update apt packages."
+  become: yes
+  file:
+    src: artifact.tar.gz
+    dst: ~/
+
+- name: "unzip artifacts"
+  become: yes
+  unarchive:
+    src: ~/artifact.tar.gz
+    dest: ~/
+
+- name: "Executing node"
+  shell: |
+    cd backend
+    npm install
+    pm2 stop default
+    pm2 start npm -- start
+
+...
