@@ -2,14 +2,31 @@ version: 2.1
 
 commands:
   destroy-environment: 
-    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.    
     steps:
       - run:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}          
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}     
+   
+  destroy-environment-frontend: 
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.    
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}      
+  
+  destroy-environment-backend: 
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.    
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} 
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -190,7 +207,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i project/.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
 
   run-migrations:
@@ -203,7 +220,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm run migration > migrations_dump.txt
+            npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to kvdb.io
           command: |
@@ -216,13 +233,15 @@ jobs:
 
   # deploy-frontend:
   #   docker:
-  #     # Docker image here that supports AWS CLI
+  #     - image: amazon/aws-cli
   #   steps:
-  #     # Checkout code from git
+  #     - checkout
+  #     - attach_workspace:
+  #         at: ~/
   #     - run:
-  #         name: Install dependencies
+  #         name: Install nodejs dependencies
   #         command: |
-  #           # your code here
+  #           yum install nodejs
   #     - run:
   #         name: Get backend url
   #         command: |
