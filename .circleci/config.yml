@@ -190,7 +190,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i project/.circleci/ansible/inventory.txt project/.circleci/ansible/configure-server.yml
+            ansible-playbook -i project/.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
 
   run-migrations:
@@ -214,26 +214,26 @@ jobs:
           
      # Here's where you will add some code to rollback on failure      
 
-#   deploy-frontend:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#             export API_URL="http://${BACKEND_IP}:3030"
-#             echo "${API_URL}"
-#       - run:
-#           name: Deploy frontend objects
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure      
+  # deploy-frontend:
+  #   docker:
+  #     # Docker image here that supports AWS CLI
+  #   steps:
+  #     # Checkout code from git
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           # your code here
+  #     - run:
+  #         name: Get backend url
+  #         command: |
+  #           # your code here
+  #           export API_URL="http://${BACKEND_IP}:3030"
+  #           echo "${API_URL}"
+  #     - run:
+  #         name: Deploy frontend objects
+  #         command: |
+  #           # your code here
+      # Here's where you will add some code to rollback on failure      
                     
 #   deploy-backend:
 #     docker:
