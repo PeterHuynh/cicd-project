@@ -8,10 +8,11 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws s3 rm s3://udapeople-{CIRCLE_WORKFLOW_ID:0:7} --recursive
+            echo "Destroying environment..."
+            aws s3 rm "s3://udapeople-{CIRCLE_WORKFLOW_ID:0:7}"" --recursive
 
-            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} 
-            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}     
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" 
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"     
    
   destroy-environment-frontend: 
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.    
@@ -196,8 +197,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       
-      - destroy-environment-frontend        
-      - destroy-environment-backend
+      - destroy-environment    
 
 
   configure-infrastructure:
@@ -218,8 +218,8 @@ jobs:
           command: |
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
 
-      - destroy-environment-frontend        
-      - destroy-environment-backend
+      - destroy-environment
+      
 
   run-migrations:
     docker:
@@ -240,8 +240,8 @@ jobs:
               curl https://kvdb.io/5M2r9Ds9Z4vr2minhsdMZ7/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
       - revert-migrations
-      # - destroy-environment-frontend        
-      # - destroy-environment-backend         
+      - destroy-environment
+      
 
   deploy-frontend:
     docker:
@@ -276,8 +276,8 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - revert-migrations
-      - destroy-environment-frontend        
-      - destroy-environment-backend
+      - destroy-environment
+      
                     
   deploy-backend:        
     docker:
@@ -314,8 +314,7 @@ jobs:
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
       - revert-migrations
-      - destroy-environment-frontend        
-      - destroy-environment-backend            
+      - destroy-environment      
 
   smoke-test:
     docker:
@@ -361,8 +360,7 @@ jobs:
             fi      
 
       - revert-migrations
-      - destroy-environment-frontend        
-      - destroy-environment-backend
+      - destroy-environment      
 
   cloudfront-update:
     docker:
