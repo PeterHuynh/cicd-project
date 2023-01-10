@@ -31,11 +31,12 @@
 
 - name: "Create app directory"
   become: true
-  ansible.builtin.file:
+  file:
     path: /home/ubuntu/backend
+    state: directory
     owner: ubuntu
     group: ubuntu
-    mode: '0644'
+    mode: '0755'
 
 - name: "Copy backend artifact file"
   become: yes
