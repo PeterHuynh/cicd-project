@@ -230,7 +230,7 @@ jobs:
             fi
       - destroy-environment         
 
- deploy-frontend:
+  deploy-frontend:
     docker:
       - image: amazon/aws-cli
     steps:
