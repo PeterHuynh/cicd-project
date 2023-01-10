@@ -35,16 +35,15 @@ commands:
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            SUCCESS=$(curl https://kvdb.io/5M2r9Ds9Z4vr2minhsdMZ7/migration_${CIRCLE_WORKFLOW_ID:0:7})
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+              cd ~/project/backend
+              npm install
+              npm run migrations:revert
             fi
             
 jobs:
@@ -171,9 +170,8 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-      
-              
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"             
+
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -189,7 +187,9 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       
+      - destroy-environment-frontend        
       - destroy-environment
+
 
   configure-infrastructure:
     docker:
@@ -208,6 +208,8 @@ jobs:
           name: Configure server
           command: |
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
+
+      - destroy-environment-frontend        
       - destroy-environment
 
   run-migrations:
@@ -228,6 +230,8 @@ jobs:
             then
               curl https://kvdb.io/5M2r9Ds9Z4vr2minhsdMZ7/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
+      - revert-migrations
+      - destroy-environment-frontend        
       - destroy-environment         
 
   deploy-frontend:
@@ -240,7 +244,12 @@ jobs:
       - run:
           name: Install nodejs dependencies
           command: |
-            yum install nodejs
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum -y install nodejs
+      - run:
+          name: Install tar, gzip
+          command: |
+            yum -y install tar gzip
       - run:
           name: Get backend url
           command: |
@@ -257,6 +266,7 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      - destroy-environment-frontend        
       - destroy-environment
                     
 #   deploy-backend:
