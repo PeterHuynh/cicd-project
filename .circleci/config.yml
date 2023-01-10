@@ -244,12 +244,8 @@ jobs:
       - run:
           name: Install nodejs dependencies
           command: |
-            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
-            yum -y install nodejs
-      - run:
-          name: Install tar, gzip
-          command: |
-            yum -y install tar gzip
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -            
+            yum -y install nodejs tar gzip             
       - run:
           name: Get backend url
           command: |
