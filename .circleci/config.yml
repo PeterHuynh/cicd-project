@@ -249,9 +249,9 @@ jobs:
             apk add nodejs
             apk add npm
             apk add curl
-            pip install awscli --upgrade    
-		        apk add --update ansible
-            apk add --update nodejs npm 
+            pip install awscli --upgrade
+            apk add --update ansible
+            apk add --update nodejs npm      
       - run:
           name: Get backend url
           command: |
