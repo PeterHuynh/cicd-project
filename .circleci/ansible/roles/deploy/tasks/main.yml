@@ -1,6 +1,36 @@
 ---
 - name: "update apt packages."
   become: yes
+  apt:
+    update_cache: yes 
+
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade: yes
+
+- name: remove dependencies that are no longer required
+  become: yes
+  apt:
+    autoremove: yes 
+
+- name: "Install nodejs and npm"
+  become: yes
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
+
+- name: "Install pm2 package"
+  become: yes
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+
+- name: "Copy backend artifact file"
+  become: yes
   copy:
     src: ./artifact.tar.gz
     dst: ~/
@@ -11,7 +41,7 @@
     src: ~/artifact.tar.gz
     dest: ~/
 
-- name: "Executing node"
+- name: "Executing backend node"
   shell: |
     cd backend
     npm install
