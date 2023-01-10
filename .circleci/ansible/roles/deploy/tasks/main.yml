@@ -1,8 +1,8 @@
 ---
 - name: "update apt packages."
   become: yes
-  file:
-    src: artifact.tar.gz
+  copy:
+    src: ./artifact.tar.gz
     dst: ~/
 
 - name: "unzip artifacts"
