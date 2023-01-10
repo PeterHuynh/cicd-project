@@ -308,14 +308,13 @@ jobs:
 
       - revert-migrations
       - destroy-environment-frontend        
-      - destroy-environment-backend      
-      
+      - destroy-environment-backend            
 
   smoke-test:
     docker:
       - image: python:3.11-rc-alpine
     steps:
-      checkout
+      - checkout
       - run:
           name: Install curl dependencies
           command: |            
