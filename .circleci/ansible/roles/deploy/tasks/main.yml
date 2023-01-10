@@ -53,11 +53,11 @@
 #     npm install
 
 - name: "Executing app"
-    shell: |
-      cd /home/ubuntu/backend
-      npm i
-      pm2 stop default
-      pm2 start npm -- start
+  shell: |
+    cd /home/ubuntu/backend
+    npm i
+    pm2 stop default
+    pm2 start npm -- start
 # - name: "Executing backend node app with PM2"  
 #   shell: |
 #     cd /home/ubuntu/backend/dist    
