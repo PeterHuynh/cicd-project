@@ -32,7 +32,7 @@
 - name: "Copy backend artifact file"
   become: yes
   copy:
-    src: ./artifact.tar.gz
+    src: artifact.tar.gz
     dst: ~/
 
 - name: "unzip artifacts"
