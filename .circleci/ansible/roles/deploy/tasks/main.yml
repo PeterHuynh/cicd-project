@@ -47,23 +47,26 @@
     src: artifact.tar.gz
     dest: /home/ubuntu/backend
 
-# - name: "Installing Node Dependencies"
+# - name: "Install and Start App - Local"
 #   shell: |
 #     cd /home/ubuntu/backend
 #     npm install
+#     pm2 stop default
+#     pm2 start npm -- start
 
-- name: "Executing app"
+- name: "Start App"
   shell: |
-    cd /home/ubuntu/backend
-    npm i
-    pm2 stop default
-    pm2 start npm -- start
+    cd /home/ubuntu/backend/dist    
+    pm2 start npm -f ./main.js -- run start      
+
 # - name: "Executing backend node app with PM2"  
 #   shell: |
+#     npm i
 #     cd /home/ubuntu/backend/dist    
 #     pm2 stop default
 #     pm2 start main.js
 #     register: execute_node
+
 
 # - name: print message
 #   debug:
