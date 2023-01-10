@@ -236,18 +236,20 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/aws:2022.11  
     steps:
       - checkout
       - run:
           name: install tar gzip packages
           command: |
-            yum -y install tar gzip      
+            apt-get install tar gzip
       - run:
           name: Install nodejs package 
           command: |
-            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -            
-            sudo yum install -y nodejs
+            apt-get update
+            apt-get install nodejs
+            node -v
+            aws --version
       - run:
           name: Get backend url
           command: |
