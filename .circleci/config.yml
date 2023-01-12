@@ -238,7 +238,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:13.8
     steps:
       - checkout
       - run:
@@ -438,15 +438,19 @@ jobs:
           name: Remove old stacks and files
           command: |
 
+            export CurrentWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text) 
+            echo "CurrentWorkflowID:" "$CurrentWorkflowID"
+            
+            echo "CIRCLE_WORKFLOW_ID:"  "${CIRCLE_WORKFLOW_ID:0:7}"
+
+            export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
+            echo "Current Stack names:" "${STACKS[@]}"
+
             export OldWorkflowID=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter UPDATE_COMPLETE --no-paginate --output text)
 
-            echo "OldWorkflowID:"  ${OldWorkflowID}
-            
-            export CurrentWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)                    
-            
-            echo "CIRCLE_WORKFLOW_ID:"  "${CIRCLE_WORKFLOW_ID:0:7}"            
+            echo "OldWorkflowID:"  ${OldWorkflowID}            
 
-            if [ "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]
+            if [[ "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
 
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
