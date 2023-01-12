@@ -406,7 +406,7 @@ jobs:
 
             echo "Save OldWorkflowID to File OldWorkflowID.txt."
             echo $OldWorkflowID >> ~/project/OldWorkflowID.txt
-            cat  ~/OldWorkflowID.txt           
+            cat  ~/project/OldWorkflowID.txt           
             echo "OldWorkflowID: " "$OldWorkflowID"
 
             echo "Updating Cloudfront..."
