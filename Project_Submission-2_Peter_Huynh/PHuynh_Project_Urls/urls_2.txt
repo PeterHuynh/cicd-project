@@ -1,0 +1,19 @@
+A. Utilize Deployment Strategies to design and build CI/CD pipelines that support Continuous Delivery processes.
+
+A text file named urls.txt including:
+
+Public Url to GitHub repository (not private) [URL01]
+https://github.com/PeterHuynh/cicd-project.git
+
+Public URL for your S3 Bucket (aka, your green candidate front-end) [URL02]
+http://udapeople-d4ede96.s3-website-us-west-2.amazonaws.com
+
+Public URL for your CloudFront distribution (aka, your blue production front-end) [URL03]
+http://djh4lou08c78z.cloudfront.net
+
+
+Public URLs to deployed application back-end in EC2 [URL04]
+http://34.209.34.91:3030/api/status
+
+Public URL to your Prometheus Server [URL05]
+http://ec2-35-165-231-3.us-west-2.compute.amazonaws.com:9090/
