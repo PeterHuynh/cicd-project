@@ -200,6 +200,7 @@ jobs:
             echo "" > inventory.txt
             echo [web] > inventory.txt
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeople" --output text >> .circleci/ansible/inventory.txt
+
       - run:
           name: check inventory file content
           command: cat .circleci/ansible/inventory.txt
@@ -505,5 +506,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]      
-      - cleanup:
-          requires: [cloudfront-update]
+      # - cleanup:
+      #     requires: [cloudfront-update]
